@@ -1,0 +1,24 @@
+const express = require("express");
+// const { response } = require("express");
+const bodyParser = require('body-parser'); //middleware/menangkap data pada postman
+const morgan = require('morgan'); //melihat aktivitas user (post/get/delete/patch)
+// =================================
+const routerNavigation = require('./src')
+// =================================
+
+const app = express();
+app.use(bodyParser.json())                          //mengambi data pada raw/json
+app.use(bodyParser.urlencoded({extended : false})); //mengambil data pada body url
+app.use(morgan('dev')) //dev = format
+
+// =================================
+app.use('/', routerNavigation)
+// =================================
+
+app.get('*', (request,response)=>{
+    response.status(404).send('Path Not Found') //resp utk url yang salah/tidak tersedia
+})
+
+app.listen(3001, "127.0.0.1", () => {
+  console.log("Express app is listening on Host: 127.0.0.1 and port: 3001"); //menentukan port yg terhubung pada express
+});
