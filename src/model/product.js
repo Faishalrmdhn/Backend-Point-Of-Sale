@@ -3,13 +3,22 @@
 const connection = require('../config/mysql')
 
 module.exports = {
-  getAllProduct: () => {
+  getProduct: (limit, offset) => {
     return new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM product`, (error, result) => {
+      connection.query("SELECT * FROM product LIMIT ? OFFSET ?",[limit, offset],(error, result) => {
         !error ? resolve(result) : reject(new Error(error))
       })
     })
   },
+  //===========================================================
+  getProductCount:()=>{
+  return new Promise ((resolve, reject)=>{
+  connection.query("SELECT COUNT(*) as total FROM product", (error,result)=> {
+    !error ? resolve(result[0].total) : reject(new Error(error))
+  })
+})
+  },
+  //===========================================================
   getProductById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(`SELECT * FROM product WHERE product_id = ?`, id, (error, result) => {
@@ -21,7 +30,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       connection.query("INSERT INTO product SET ?", setData, (error, result) => {
           if (!error) { //memasukkan apa yg diinputkan user
-          const newResult = {
+          const newResult = { // apa yg ditampilkan
             product_id : result.insertId, 
             ...setData
           }
