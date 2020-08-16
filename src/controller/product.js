@@ -1,7 +1,8 @@
 //LOGIC untuk aplikasi backend
-const {getProduct,getProductById,postProduct,patchProduct,deleteProduct,getProductCount} = require('../model/product')
+const {getProduct,getProductById,getProductByName,postProduct,patchProduct,deleteProduct,getProductCount} = require('../model/product')
 const helper = require('../helper/index')
 const qs = require('querystring')
+// const { response } = require('express')
 
 const getPrevLink = (page, currentQuery)=>{
  if(page > 1){
@@ -58,7 +59,7 @@ module.exports = {
             const {id} = request.params
             const result = await getProductById(id) //(id) dilempar ke model 
             if(result.length>0){
-                return helper.response(response, 200, "Success Get Product By ID",
+                return helper.response(response, 200, `Success Get Product By ID: ${id}`,
                 result)
             } else {
                 return helper.response(response, 404, `Product by ID : ${id} Not Found`)
@@ -68,19 +69,31 @@ module.exports = {
             return helper.response(response, 400, "Bad Request", error)
         }
     },
+    getProductByName : async(request, response)=>{
+      try{ 
+        const {name} = request.params
+        const result = await getProductByName(name)
+        // console.log(name)
+        return helper.response(response, 200, `Success Get Product By Name: ${name}`,result)
+      } catch(error){
+        // return helper.response(response, 400, "Bad Request", error)
+      }
+    },
     postProduct: async (request, response)=>{
         try{
-            const {product_name, product_price, product_status}
+            const {product_name, product_price, product_status,category_id}
             = request.body;
             const setData = {
                 //kiri mysql kanan postman
                 product_name, //:product_name
                 product_price, //:product_price
                 product_created_at : new Date(),
-                product_status //:product_status
+                product_status, //:product_status
+                category_id
             }
             const result = await postProduct(setData);
             return helper.response(response, 201, "Product Created", result)
+            
         }catch(error){
             return helper.response(response, 400, "Bad Request", error)
         }
@@ -88,12 +101,13 @@ module.exports = {
     patchProduct: async (request, response) => {
         try {
           const { id } = request.params
-          const { product_name, product_price, product_status } = request.body
+          const { product_name, product_price, product_status,category_id} = request.body
           const setData = {
             product_name,  
             product_price,
             product_updated_at: new Date(),
-            product_status
+            product_status,
+            category_id
           }
           const checkId = await getProductById(id)
           if (checkId.length > 0) {

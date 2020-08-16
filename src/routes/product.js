@@ -1,11 +1,11 @@
 //Berisi data semua endpoint
 const router = require("express").Router() //import, untuk menandakan isi file ini merupakan router
-const {getAllProduct,getProductById,postProduct,patchProduct,deleteProduct} = require('../controller/product');
+const {getAllProduct,getProductById,postProduct,patchProduct,deleteProduct,getProductByName} = require('../controller/product');
 
 // [GET]
 router.get("/", getAllProduct )
 router.get("/:id", getProductById )//:id ->menandakan id yg dijalankan pada query param 
-
+router.get("/search/:name", getProductByName)
 // [POST]
 router.post('/', postProduct)
 

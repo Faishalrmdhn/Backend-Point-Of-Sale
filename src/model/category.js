@@ -12,7 +12,7 @@ module.exports = {
     getCategoryById : (id)=>{
         return new Promise((resolve, reject) => {
             connection.query(`SELECT * FROM category WHERE category_id = ?`, id, (error, result) => {
-              !error ? resolve(result) : reject(new Error(error)) //product_id dari postman
+              !error ? resolve(result) : reject(new Error(error)) //category_id dari postman
             })
           })
     },
@@ -48,7 +48,7 @@ module.exports = {
       },
       deleteCategory: (id) => {
         return new Promise((resolve, reject) => {
-          connection.query("DELETE FROM category WHERE product_id = ?", id, (error, result) => {
+          connection.query("DELETE FROM category WHERE category_id = ?", id, (error, result) => {
             if (!error) {
               const newResult = {
                 id: id
@@ -60,4 +60,4 @@ module.exports = {
           })
         })
       }
-}
+    }

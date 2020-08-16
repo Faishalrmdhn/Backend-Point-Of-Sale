@@ -45,8 +45,8 @@ module.exports = {
           const {id} = request.params
           const {category_status} = request.body
           const setData = {
-            category_updated_at: new Date(),
-            category_status
+            category_status,
+            category_updated_at: new Date()
           }
           const checkId = await getCategoryById(id)
           if (checkId.length > 0) {
@@ -62,8 +62,13 @@ module.exports = {
       deleteCategory: async (request, response) => {
         try {
           const { id } = request.params
-          const result = await deleteCategory(id)
-          return helper.response(response, 201, "category Deleted", result)
+          const cekId = await getCategoryById(id)
+          if (cekId.length > 0){
+            const result = await deleteCategory(id)
+            return helper.response(response, 201, "category Deleted", result)
+          } else {
+            return helper.response(response, 404, `Data By Id: ${id} unknown / has been deleted`)
+          }
         } catch (error) {
           return helper.response(response, 400, "Bad Request", error)
         }
