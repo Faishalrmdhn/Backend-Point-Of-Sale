@@ -29,7 +29,7 @@ const getNextLink = (page, totalPage, currentQuery)=> {
 
 module.exports = {
     getAllProduct: async(request, response)=>{ //nama object buat si route
-          let {page, limit} = request.query
+          let {sort, limit, page} = request.query
           page = parseInt(page)
           limit = parseInt(limit)
           let totalData = await getProductCount()
@@ -46,8 +46,7 @@ module.exports = {
             nextLink: nextLink && `http://127.0.0.1:3001/product?${nextLink}`
           }
         try {
-            const result = await getProduct(limit,offset);
-            
+            const result = await getProduct(sort, limit, offset);
             return helper.response(response, 200, "Success Get Product!", result, pageInfo)
         } catch (error){
             return helper.response(response, 400, "Bad Request!", error)

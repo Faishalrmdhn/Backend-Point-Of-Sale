@@ -29,22 +29,12 @@ module.exports = {
         }
     },
     postOrders: async (request, response)=>{
-        try{
-            let history_subtotal = 0;
-            let invoice = Math.floor(Math.random() * 1000000);
-            const setDatas = {
-                invoice, 
-                history_subtotal,
-                history_created_at : new Date()
-        }
-        const results = await postHistory(setDatas);
-        let idHistory = result.history_id;
-            
+        try{            
         const test = request.body.orders;
             const testArr = test.map(async(value)=>{
-                console.log(value)
-                // Set data disini
+                // console.log(value)
                 const setData = {
+                    // history_id: 
                     product_id: value.product_id,
                     order_qty: value.order_qty,
                     order_price: value.order_price, 
@@ -52,9 +42,8 @@ module.exports = {
                 }
                 const result = await postOrders(setData);   
                 // console.log(setData)
-                // return helper.response(response, 201, "Orders Created", result)
+                return helper.response(response, 201, "Orders Created", result)
             })
-            // console.log(idHistory)
             // const result = await postOrders(setData);              
         }catch(error){
             // console.log(error)

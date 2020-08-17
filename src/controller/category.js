@@ -29,10 +29,11 @@ module.exports = {
     },
     postCategory: async (request, response)=>{
         try{
-            const {category_status}= request.body;
+            const {category_status, category_name}= request.body;
             const setData = {
                 category_created_at : new Date(),
-                category_status 
+                category_status,
+                category_name 
             }
             const result = await postCategory(setData);
             return helper.response(response, 201, "Category Created", result)
@@ -43,9 +44,10 @@ module.exports = {
     patchCategory: async (request, response) => {
         try {
           const {id} = request.params
-          const {category_status} = request.body
+          const {category_status, category_name} = request.body
           const setData = {
             category_status,
+            category_name,
             category_updated_at: new Date()
           }
           const checkId = await getCategoryById(id)

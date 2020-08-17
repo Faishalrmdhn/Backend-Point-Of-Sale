@@ -15,7 +15,7 @@ module.exports = {
             })
           })
     },
-    postHistory : (setDatas)=>{
+    postHistory : (setData)=>{
         return new Promise ((resolve, reject) =>{
             connection.query(`INSERT INTO history SET ?`, setData, (error,result)=>{
                 if (!error){
