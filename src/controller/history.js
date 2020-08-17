@@ -1,14 +1,61 @@
-const {getAllHistory,getHistoryById, postHistory, patchHistory} = require('../model/history')
+const {getHistory,getHistoryCount,getHistoryById, postHistory, patchHistory,getWithOutSort} = require('../model/history')
 const {postOrders} = require('../model/orders')
 const {getProductById} = require('../model/product')
 const helper = require ('../helper/index')
 const qs = require('querystring')
+const { isUndefined, isNullOrUndefined } = require('util')
+
+const getPrevLink = (page, currentQuery)=>{
+    if(page > 1){
+     const generatedPage = {
+       page:page - 1
+     }
+     const resultPrevLink = {...currentQuery, ...generatedPage}
+     return qs.stringify(resultPrevLink)
+   } else{
+      return null
+    }
+   }
+   const getNextLink = (page, totalPage, currentQuery)=> {
+     if (page < totalPage){
+       const generatedPage = {
+         page:page +1 
+       }
+     const resultNextLink = {...currentQuery, ...generatedPage}
+     return qs.stringify(resultNextLink)
+     } else{
+       return null
+     }
+   }
 
 module.exports = {
 getAllHistory : async (request, response)=> {
+    let {sort, limit, page, ascdsc} = request.query
+    page = parseInt(page)
+    limit = parseInt(limit)
+    let totalData = await getHistoryCount()
+    let totalPage = Math.ceil(totalData/limit)
+    let offset = page * limit - limit;
+    let prevLink= getPrevLink(page, request.query)
+    let nextLink= getNextLink(page, totalPage,request.query)
+    const pageInfo = {
+      page,
+      totalPage,
+      limit,
+      totalData,
+      prevLink: prevLink && `http://127.0.0.1:3001/history?${prevLink}`,
+      nextLink: nextLink && `http://127.0.0.1:3001/history?${nextLink}`
+    }
+
+    const withOutSort = await getWithOutSort(limit,offset)
+    // console.log(withOutSort)
     try{
-        const result = await getAllHistory();
-        return helper.response(response,200, "Success Get History", result)
+        if(typeof request.query.sort === 'undefined') {   
+        return helper.response(response, 200, "Success Get History", withOutSort)
+        } else {
+            const result = await getHistory(sort, limit, offset, ascdsc);
+            return helper.response(response,200, `Success Get History with sort by ${sort}`, result, pageInfo)
+        }   
     } catch(error){
         return helper.response(response, 400, "Bad Request!", error)
     }

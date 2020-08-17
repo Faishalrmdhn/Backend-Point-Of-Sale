@@ -1,5 +1,5 @@
 //LOGIC untuk aplikasi backend
-const {getProduct,getProductById,getProductByName,postProduct,patchProduct,deleteProduct,getProductCount} = require('../model/product')
+const {getProduct,getWithOutSort,getProductById,getProductByName,postProduct,patchProduct,deleteProduct,getProductCount} = require('../model/product')
 const helper = require('../helper/index')
 const qs = require('querystring')
 // const { response } = require('express')
@@ -29,7 +29,7 @@ const getNextLink = (page, totalPage, currentQuery)=> {
 
 module.exports = {
     getAllProduct: async(request, response)=>{ //nama object buat si route
-          let {sort, limit, page} = request.query
+          let {sort, limit, page, ascdsc} = request.query
           page = parseInt(page)
           limit = parseInt(limit)
           let totalData = await getProductCount()
@@ -45,9 +45,15 @@ module.exports = {
             prevLink: prevLink && `http://127.0.0.1:3001/product?${prevLink}`,
             nextLink: nextLink && `http://127.0.0.1:3001/product?${nextLink}`
           }
+
+          const withOutSort = await getWithOutSort(limit, offset)
         try {
-            const result = await getProduct(sort, limit, offset);
-            return helper.response(response, 200, "Success Get Product!", result, pageInfo)
+          if (typeof request.query.sort === 'undefined'){
+            return helper.response(response, 200, "Success Get Product", withOutSort)
+          }else {
+            const result = await getProduct(sort, limit, offset, ascdsc);
+            return helper.response(response, 200, `Success Get Product with sort by ${sort}`, result, pageInfo)
+          }             
         } catch (error){
             return helper.response(response, 400, "Bad Request!", error)
         }

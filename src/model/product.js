@@ -3,14 +3,20 @@
 const connection = require('../config/mysql')
 
 module.exports = {
-  getProduct: (sort, limit, offset) => {
+  getProduct: (sort, limit, offset,ascdsc) => {
     return new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM product ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`,(error, result) => {
+      connection.query(`SELECT * FROM product ORDER BY ${sort} ${ascdsc} LIMIT ${limit} OFFSET ${offset}`,(error, result) => {
       !error ? resolve(result) : reject(new Error(error))
       })
     })
   },
-  //===========================================================
+  getWithOutSort : (limit,offset)=> {
+    return new Promise((resolve, reject)=>{
+        connection.query(`SELECT * FROM product LIMIT ${limit} OFFSET ${offset}`,(error, result) => {
+               !error ? resolve(result) : reject(new Error(error))
+           })
+       }) 
+},
   getProductCount:()=>{
   return new Promise ((resolve, reject)=>{
   connection.query("SELECT COUNT(*) as total FROM product", (error,result)=> {
@@ -18,7 +24,6 @@ module.exports = {
   })
 })
   },
-  //===========================================================
   getProductById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(`SELECT * FROM product WHERE product_id = ?`, id, (error, result) => {
