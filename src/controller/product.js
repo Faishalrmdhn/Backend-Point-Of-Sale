@@ -1,8 +1,7 @@
-//LOGIC untuk aplikasi backend
 const {getProduct,getWithOutSort,getProductById,getProductByName,postProduct,patchProduct,deleteProduct,getProductCount} = require('../model/product')
 const helper = require('../helper/index')
 const qs = require('querystring')
-// const { response } = require('express')
+
 
 const getPrevLink = (page, currentQuery)=>{
  if(page > 1){

@@ -15,7 +15,6 @@ module.exports = {
                })
            }) 
     },
-    //=======================================================================
     getHistoryCount:()=>{
         return new Promise ((resolve, reject)=>{
         connection.query("SELECT COUNT(*) as total FROM history", (error,result)=> {
@@ -23,7 +22,6 @@ module.exports = {
         })
       })
         },
-    //=======================================================================
     getHistoryById : (id)=>{
         return new Promise((resolve, reject) => {
             connection.query(`SELECT * FROM history WHERE history_id = ?`, id, (error, result) => {

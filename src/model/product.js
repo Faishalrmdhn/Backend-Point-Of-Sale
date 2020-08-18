@@ -1,5 +1,3 @@
-//untuk menghubungkan antara ENDPOINT dalam ROUTES & LOGIC CONTROLLER
-//isinya query sql utk menghubungkan ke dalam database
 const connection = require('../config/mysql')
 
 module.exports = {

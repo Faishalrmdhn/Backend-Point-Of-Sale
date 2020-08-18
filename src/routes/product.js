@@ -1,4 +1,3 @@
-//Berisi data semua endpoint
 const router = require("express").Router() 
 const {getAllProduct,getProductById,postProduct,patchProduct,deleteProduct,getProductByName} = require('../controller/product');
 
