@@ -28,7 +28,7 @@ const getNextLink = (page, totalPage, currentQuery)=> {
 }
 
 module.exports = {
-    getAllProduct: async(request, response)=>{ //nama object buat si route
+    getAllProduct: async(request, response)=>{ 
           let {sort, limit, page, ascdsc} = request.query
           page = parseInt(page)
           limit = parseInt(limit)
@@ -48,7 +48,7 @@ module.exports = {
 
           const withOutSort = await getWithOutSort(limit, offset)
         try {
-          if (typeof request.query.sort === 'undefined'){
+          if (typeof sort === 'undefined'){
             return helper.response(response, 200, "Success Get Product", withOutSort)
           }else {
             const result = await getProduct(sort, limit, offset, ascdsc);
@@ -60,28 +60,31 @@ module.exports = {
     },
     getProductById: async(request, response)=>{
         try{
-            // const id = request.params.id
-            const {id} = request.params
-            const result = await getProductById(id) //(id) dilempar ke model 
+            const {id} = request.query
+            const result = await getProductById(id) 
             if(result.length>0){
                 return helper.response(response, 200, `Success Get Product By ID: ${id}`,
                 result)
             } else {
                 return helper.response(response, 404, `Product by ID : ${id} Not Found`)
             }
-            // console.log(result);
         } catch (error){
             return helper.response(response, 400, "Bad Request", error)
         }
     },
     getProductByName : async(request, response)=>{
       try{ 
-        const {name} = request.params
-        const result = await getProductByName(name)
-        // console.log(name)
-        return helper.response(response, 200, `Success Get Product By Name: ${name}`,result)
+        const {name, limit} = request.query
+        const result = await getProductByName(name, limit)
+        console.log(name)
+        console.log(limit)
+        // if(result.length>0){
+          return helper.response(response, 200, `Success Get Product By Name: ${name}`,result)
+        // }else {
+        //   return helper.response(response, 404, `Product By Name: ${name} not found`)
+        // }     
       } catch(error){
-        // return helper.response(response, 400, "Bad Request", error)
+        return helper.response(response, 400, "Bad Request", error)
       }
     },
     postProduct: async (request, response)=>{

@@ -11,7 +11,7 @@ module.exports = {
     getOrdersById : (id)=>{
         return new Promise((resolve, reject) => {
             connection.query(`SELECT * FROM orders WHERE order_id = ?`, id, (error, result) => {
-              !error ? resolve(result) : reject(new Error(error)) //orders_id dari postman
+              !error ? resolve(result) : reject(new Error(error)) //order_id dari postman
             })
           })
     },

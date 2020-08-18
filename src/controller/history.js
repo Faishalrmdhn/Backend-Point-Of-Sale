@@ -1,9 +1,8 @@
 const {getHistory,getHistoryCount,getHistoryById, postHistory, patchHistory,getWithOutSort} = require('../model/history')
-const {postOrders} = require('../model/orders')
+const {postOrders, getOrdersById} = require('../model/orders')
 const {getProductById} = require('../model/product')
 const helper = require ('../helper/index')
 const qs = require('querystring')
-const { isUndefined, isNullOrUndefined } = require('util')
 
 const getPrevLink = (page, currentQuery)=>{
     if(page > 1){
@@ -65,9 +64,7 @@ getHistoryById : async (request, response)=>{
     try{
         const {id} = request.params
         const result = await getHistoryById(id)
-        // const result2 = await getAllOrders()
-        
-        // console.log(result2)
+
         if(result.length>0){
             return helper.response(response, 200, `Success Get History By ID : ${id} `,
             result)
@@ -97,13 +94,14 @@ postHistory: async (request, response)=>{
 CheckOut : async(request, response)=>{
     try{
         let history_subtotal = 0;
-    let invoice = Math.floor(Math.random() * 1000000);
+        let invoice = Math.floor(Math.random() * 1000000);
         const setData = {
             invoice, 
             history_subtotal,
             history_created_at : new Date()
         }
         const result = await postHistory(setData);
+        //================================================//
         let idHistory = result.history_id;
         let totalPrice = 0;
         let totalResult={
@@ -115,22 +113,24 @@ CheckOut : async(request, response)=>{
         }
             request.body.history.map(async(value,index)=>{
                 const products = await getProductById(value.product_id)
-               //  console.log(products.product_price)
-               const productName = JSON.stringify(products[0].product_name)
+                const productName = JSON.stringify(products[0].product_name)
                 const productPrice = JSON.stringify(products[0].product_price)
-                   const setData = {
-                       history_id: idHistory,
-                       product_id: value.product_id,
-                       order_qty: value.order_qty,
-                       order_price: Number(productPrice),
-                       order_created_at : new Date()
+                
+                const setData = {
+                    history_id: idHistory,
+                    product_id: value.product_id,
+                    order_qty: value.order_qty,
+                    order_price: Number(productPrice),
+                    order_created_at : new Date()
                    }
                    totalPrice += (value.order_qty * Number(productPrice))
-                   const result = await postOrders(setData);   
+                   
+                   const result = await postOrders(setData); 
                request.body.history[index].product_name=JSON.parse(productName) //output
                })
+               //================================================//  
                setTimeout(async()=>{
-               totalResult.subtotal = totalPrice;
+               totalResult.subtotal = totalPrice + (totalPrice *0.1); //add tax
                await patchHistory({
                    history_subtotal : totalPrice,
                    history_created_at : new Date()
