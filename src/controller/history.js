@@ -6,6 +6,7 @@ const {
   patchHistory,
   getWithOutSort,
   getMonthHistory,
+  getYearHistory,
 } = require("../model/history");
 const { postOrders, getOrdersById } = require("../model/orders");
 const { getProductById } = require("../model/product");
@@ -42,6 +43,7 @@ module.exports = {
     limit = parseInt(limit);
     let totalData = await getHistoryCount();
     let getMonth = await getMonthHistory();
+    let getYear = await getYearHistory();
     let totalPage = Math.ceil(totalData / limit);
     let offset = page * limit - limit;
     let prevLink = getPrevLink(page, request.query);
@@ -54,6 +56,7 @@ module.exports = {
       prevLink: prevLink && `http://127.0.0.1:3001/history?${prevLink}`,
       nextLink: nextLink && `http://127.0.0.1:3001/history?${nextLink}`,
       getMonth,
+      getYear,
     };
 
     const withOutSort = await getWithOutSort(limit, offset);
