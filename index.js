@@ -11,6 +11,7 @@ app.use(cors());
 app.use(bodyParser.json()); //mengambi data pada raw/json
 app.use(bodyParser.urlencoded({ extended: false })); //mengambil data pada body url
 app.use(morgan("dev")); //dev = format
+app.use(express.static("uploads"));
 app.use((request, response, next) => {
   response.header("Access-Control-Allow-Origin", "*");
   response.header(

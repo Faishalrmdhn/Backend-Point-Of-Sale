@@ -10,6 +10,8 @@ const {
 } = require("../model/product");
 const helper = require("../helper/index");
 const qs = require("querystring");
+const redis = require("redis");
+const client = redis.createClient();
 
 const getPrevLink = (page, currentQuery) => {
   if (page > 1) {
@@ -54,7 +56,13 @@ module.exports = {
     };
 
     const withOutSort = await getWithOutSort(limit, offset);
+
+    //proses set data result ke redis
     try {
+      client.set(
+        `getproduct:${JSON.stringify(request.query)}`,
+        JSON.stringify(result)
+      );
       if (typeof sort === "undefined") {
         return helper.response(
           response,
@@ -79,9 +87,10 @@ module.exports = {
   },
   getProductById: async (request, response) => {
     try {
-      const { id } = request.query;
+      const { id } = request.params;
       const result = await getProductById(id);
       if (result.length > 0) {
+        client.setex(`getproductbyid:${id}`, 100000000, JSON.stringify(result)); //setex untuk expired get data
         return helper.response(
           response,
           200,
@@ -121,6 +130,7 @@ module.exports = {
   },
   postProduct: async (request, response) => {
     // let totalPrice =
+    console.log(request.file);
     try {
       const {
         product_name,
@@ -130,12 +140,14 @@ module.exports = {
       } = request.body;
       const setData = {
         //kiri mysql kanan postman
-        product_name, //:product_name
-        product_price, //:product_price
+        product_name,
+        product_price,
+        product_image: request.file === undefined ? "" : request.file.filename,
         product_created_at: new Date(),
-        product_status, //:product_status
+        product_status,
         category_id,
       };
+      console.log(setData);
       const result = await postProduct(setData);
       return helper.response(response, 201, "Product Created", result);
     } catch (error) {
