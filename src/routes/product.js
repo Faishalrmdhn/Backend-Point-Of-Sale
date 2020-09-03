@@ -34,16 +34,15 @@ let upload = multer({ storage: storage });
 
 // [GET]
 router.get("/", authorization, getAllProduct);
-
 router.get("/:id", authorization, getProductByIdRedis, getProductById);
-router.get("/search", getProductByName);
+router.get("/search/name", getProductByName);
 // [POST]
-router.post("/", upload.single("product_image"), postProduct);
+router.post("/", authorization, upload.single("product_image"), postProduct);
 
 // [PATCH/PUT]
-router.patch("/:id", clearRedisById, patchProduct);
+router.patch("/:id", authorization, clearRedisById, patchProduct);
 
 // [DELETE]
-router.delete("/:id", clearRedisById, deleteProduct); //clearAllDataProductRedis);
+router.delete("/:id", authorization, clearRedisById, deleteProduct); //clearAllDataProductRedis);
 
 module.exports = router;

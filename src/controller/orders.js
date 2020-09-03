@@ -1,10 +1,14 @@
 const { getAllOrders, getOrdersById, postOrders } = require("../model/orders");
 const helper = require("../helper/index");
+const qs = require("querystring");
+const redis = require("redis");
+const client = redis.createClient();
 
 module.exports = {
   getAllOrders: async (request, response) => {
     try {
       const result = await getAllOrders();
+      client.set("getorders", JSON.stringify(result));
       return helper.response(response, 200, "Success Get Order", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request!", error);

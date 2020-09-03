@@ -12,6 +12,8 @@ const { postOrders, getOrdersById } = require("../model/orders");
 const { getProductById } = require("../model/product");
 const helper = require("../helper/index");
 const qs = require("querystring");
+const redis = require("redis");
+const client = redis.createClient();
 
 const getPrevLink = (page, currentQuery) => {
   if (page > 1) {
@@ -62,6 +64,7 @@ module.exports = {
     const withOutSort = await getWithOutSort(limit, offset);
     const result = await getHistory(sort, limit, offset, ascdsc);
     try {
+      client.set("gethistory", JSON.stringify(result));
       if (typeof request.query.sort === "undefined") {
         return helper.response(
           response,
@@ -91,6 +94,7 @@ module.exports = {
       const result = await getHistoryById(id);
 
       if (result.length > 0) {
+        client.setex(`gethistorybyid:${id}`, 10000, JSON.stringify(result));
         return helper.response(
           response,
           200,

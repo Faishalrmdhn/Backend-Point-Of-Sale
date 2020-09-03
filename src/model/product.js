@@ -37,7 +37,7 @@ module.exports = {
         `SELECT * FROM product WHERE product_id = ?`,
         id,
         (error, result) => {
-          !error ? resolve(result) : reject(new Error(error)); //product_id dari postman
+          !error ? resolve(result) : reject(new Error(error));
         }
       );
     });
@@ -59,14 +59,11 @@ module.exports = {
         setData,
         (error, result) => {
           if (!error) {
-            //memasukkan apa yg diinputkan user
             const newResult = {
-              // apa yg ditampilkan
               product_id: result.insertId,
               ...setData,
             };
             resolve(newResult);
-            // console.log(result)
           } else {
             reject(new Error(error));
           }

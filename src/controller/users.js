@@ -8,9 +8,7 @@ module.exports = {
     const { user_email, user_password, user_name } = request.body;
     const salt = bcrypt.genSaltSync(10);
     const encryptPassword = bcrypt.hashSync(user_password, salt);
-    // console.log("user_password =" + user_password);
-    // console.log("user_password Bcrypt =" + encryptPassword);
-    // kondisi jika emailnya sama itu tdk bisa
+
     const setData = {
       user_email,
       user_password: encryptPassword,
@@ -25,8 +23,22 @@ module.exports = {
       if (checkEmail.length > 0) {
         return helper.response(response, 404, "Email has been registered");
       } else {
-        const result = await postUser(setData);
-        return helper.response(response, 200, "Success Register User", result);
+        const { user_password } = request.body;
+        if (user_password.length <= 8) {
+          return helper.response(
+            response,
+            404,
+            "Minimum password length is 8 characters"
+          );
+        } else {
+          const result = await postUser(setData);
+          return helper.response(
+            response,
+            200,
+            "Success Register User",
+            result
+          );
+        }
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request");

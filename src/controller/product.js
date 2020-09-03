@@ -38,7 +38,7 @@ const getNextLink = (page, totalPage, currentQuery) => {
 
 module.exports = {
   getAllProduct: async (request, response) => {
-    let { sort, limit, page, ascdsc } = request.query;
+    let { sort, page, limit, ascdsc } = request.query;
     page = parseInt(page);
     limit = parseInt(limit);
     let totalData = await getProductCount();
@@ -56,13 +56,10 @@ module.exports = {
     };
 
     const withOutSort = await getWithOutSort(limit, offset);
-
+    const result = await getProduct(sort, limit, offset, ascdsc);
     //proses set data result ke redis
     try {
-      client.set(
-        `getproduct:${JSON.stringify(request.query)}`,
-        JSON.stringify(result)
-      );
+      client.set("getproduct", JSON.stringify(result));
       if (typeof sort === "undefined") {
         return helper.response(
           response,
@@ -90,7 +87,7 @@ module.exports = {
       const { id } = request.params;
       const result = await getProductById(id);
       if (result.length > 0) {
-        client.setex(`getproductbyid:${id}`, 100000000, JSON.stringify(result)); //setex untuk expired get data
+        client.setex(`getproductbyid:${id}`, 10000, JSON.stringify(result)); //setex untuk expired get data
         return helper.response(
           response,
           200,
@@ -114,22 +111,25 @@ module.exports = {
       const result = await getProductByName(name, limit);
       console.log(name);
       console.log(limit);
-      // if(result.length>0){
-      return helper.response(
-        response,
-        200,
-        `Success Get Product By Name: ${name}`,
-        result
-      );
-      // }else {
-      //   return helper.response(response, 404, `Product By Name: ${name} not found`)
-      // }
+      if (result.length > 0) {
+        return helper.response(
+          response,
+          200,
+          `Success Get Product By Name: ${name}`,
+          result
+        );
+      } else {
+        return helper.response(
+          response,
+          404,
+          `Product By Name: ${name} not found`
+        );
+      }
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
   postProduct: async (request, response) => {
-    // let totalPrice =
     console.log(request.file);
     try {
       const {
@@ -185,7 +185,6 @@ module.exports = {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
-  //=====================================================================
   deleteProduct: async (request, response) => {
     try {
       const { id } = request.params;

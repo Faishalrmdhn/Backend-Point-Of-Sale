@@ -1,9 +1,14 @@
-const router = require("express").Router()
-const {getAllOrders,getOrdersById,postOrders} = require('../controller/orders');
+const router = require("express").Router();
+const {
+  getAllOrders,
+  getOrdersById,
+  postOrders,
+} = require("../controller/orders");
+const { authorization } = require("../middleware/auth");
 
-router.get("/", getAllOrders)
-router.get("/:id", getOrdersById)
+router.get("/", authorization, getAllOrders);
+router.get("/:id", authorization, getOrdersById);
 
-router.post("/", postOrders)
+router.post("/", authorization, postOrders);
 
 module.exports = router;

@@ -15,6 +15,30 @@ module.exports = {
       }
     });
   },
+  getHistoryByIdRedis: (request, response, next) => {
+    const { id } = request.params;
+    client.get(`gethistorybyid:${id}`, (error, result) => {
+      if (!error && result != null) {
+        console.log("data history ada di dalam redis");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data history tidak ada di dalam redis");
+        next();
+      }
+    });
+  },
+  getCategoryByIdRedis: (request, response, next) => {
+    const { id } = request.params;
+    client.get(`getcategorybyid:${id}`, (error, result) => {
+      if (!error && result != null) {
+        console.log("data category ada di dalam redis");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data category tidak ada di dalam redis");
+        next();
+      }
+    });
+  },
   //   getproduct, tambahin method baru yg ada pagination-> import ke controller-> import di routes
   clearAllDataProductRedis: (request, response, next) => {
     client.flushall((error, result) => {
@@ -25,6 +49,20 @@ module.exports = {
   clearRedisById: (request, response, next) => {
     const { id } = request.params;
     client.del(`getproductbyid:${id}`, (error, result) => {
+      console.log(result);
+      next();
+    });
+  },
+  clearhistoryRedisById: (request, response, next) => {
+    const { id } = request.params;
+    client.del(`gethistorybyid:${id}`, (error, result) => {
+      console.log(result);
+      next();
+    });
+  },
+  clearCategoryRedisById: (request, response, next) => {
+    const { id } = request.params;
+    client.del(`getcategorybyid:${id}`, (error, result) => {
       console.log(result);
       next();
     });

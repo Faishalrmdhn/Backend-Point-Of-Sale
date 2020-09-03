@@ -1,16 +1,26 @@
-const router = require("express").Router() 
-const {getAllHistory,getHistoryById,postHistory,CheckOut,patchHistory} = require('../controller/history');
+const router = require("express").Router();
+const {
+  getAllHistory,
+  getHistoryById,
+  postHistory,
+  CheckOut,
+  patchHistory,
+} = require("../controller/history");
+const { authorization } = require("../middleware/auth");
+const {
+  getHistoryByIdRedis,
+  clearhistoryRedisById,
+  clearAllDataProductRedis,
+} = require("../middleware/redis");
 
 // [GET]
-router.get("/", getAllHistory)
-router.get("/:id", getHistoryById)//:id ->menandakan id yg dijalankan pada query param 
+router.get("/", authorization, getAllHistory);
+router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById); //:id ->menandakan id yg dijalankan pada query param
 
 // [POST]
-router.post('/', postHistory)
-router.post('/CheckOut', CheckOut)
+router.post("/", authorization, postHistory);
+router.post("/CheckOut", authorization, CheckOut);
 // [PATCH/PUT]
-router.patch('/:id', patchHistory)
-
-
+router.patch("/:id", authorization, clearhistoryRedisById, patchHistory);
 
 module.exports = router;
