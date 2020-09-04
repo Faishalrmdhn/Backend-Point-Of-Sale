@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const helper = require("../helper/index");
-const { postUser, checkUser } = require("../model/users");
+const { postUser, checkUser, activateAccount } = require("../model/users");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
         return helper.response(response, 404, "Email has been registered");
       } else {
         const { user_password } = request.body;
-        if (user_password.length <= 8) {
+        if (user_password.length < 8) {
           return helper.response(
             response,
             404,
@@ -47,38 +47,73 @@ module.exports = {
   loginUser: async (request, response) => {
     try {
       const { user_email, user_password } = request.body;
-      // console.log(user_email);
       const checkDataUser = await checkUser(user_email);
+      // ========================================================================================
       if (checkDataUser.length >= 1) {
-        //proses kedua
-        const checkPassword = bcrypt.compareSync(
-          user_password,
-          checkDataUser[0].user_password
-        );
-        if (checkPassword) {
-          //   proses 3 = set JWT
-          const {
-            user_id,
-            user_email,
-            user_name,
-            user_role,
-            user_status,
-          } = checkDataUser[0];
-          let payLoad = {
-            user_id,
-            user_email,
-            user_name,
-            user_role,
-            user_status,
-          };
-          const token = jwt.sign(payLoad, "Rahasia", { expiresIn: "1000h" });
-          payLoad = { ...payLoad, token };
-          return helper.response(response, 200, "Successfull Login", payLoad);
+        if (checkDataUser[0].user_status == 1) {
+          //proses kedua
+          const checkPassword = bcrypt.compareSync(
+            user_password,
+            checkDataUser[0].user_password
+          );
+          if (checkPassword) {
+            //   proses 3 = set JWT
+            const {
+              user_id,
+              user_email,
+              user_name,
+              user_role,
+              user_status,
+            } = checkDataUser[0];
+            let payLoad = {
+              user_id,
+              user_email,
+              user_name,
+              user_role,
+              user_status,
+            };
+            const token = jwt.sign(payLoad, "Rahasia", { expiresIn: "100h" });
+            payLoad = { ...payLoad, token };
+            console.log("success login");
+            return helper.response(response, 200, "Successfull Login", payLoad);
+          } else {
+            console.log("wrong password");
+            return helper.response(response, 400, "Wrong Pasword");
+          }
         } else {
-          return helper.response(response, 400, "Wrong Pasword");
+          return helper.response(
+            response,
+            400,
+            "Your Account is inactive. Please contact your admin"
+          );
         }
-      } else {
+      }
+      // ========================================================================================
+      else {
         return helper.response(response, 400, "Email Not Registered");
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request");
+    }
+  },
+  activateAccount: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { user_email, user_name, user_role, user_status } = request.body;
+      const setData = {
+        user_email,
+        user_name,
+        user_role,
+        user_status,
+      };
+
+      const check = await checkUser(user_email);
+      if (check.length >= 1) {
+        // console.log(check);
+        const result = await activateAccount(setData, id);
+        return helper.response(response, 200, "Account is active now!", result);
+      } else {
+        return helper.response(response, 400, "Wrong Data!");
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request");
