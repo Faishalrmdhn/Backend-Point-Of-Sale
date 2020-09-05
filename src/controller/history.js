@@ -60,11 +60,14 @@ module.exports = {
       getMonth,
       getYear,
     };
-
-    const withOutSort = await getWithOutSort(limit, offset);
-    const result = await getHistory(sort, limit, offset, ascdsc);
     try {
-      client.set("gethistory", JSON.stringify(result));
+      const withOutSort = await getWithOutSort(limit, offset);
+      const result = await getHistory(sort, limit, offset, ascdsc);
+      const newData = { result, pageInfo };
+      client.set(
+        `gethistory:${JSON.stringify(request.query)}`,
+        JSON.stringify(newData)
+      );
       if (typeof request.query.sort === "undefined") {
         return helper.response(
           response,

@@ -9,18 +9,18 @@ const {
 const { authorization } = require("../middleware/auth");
 const {
   getHistoryByIdRedis,
-  clearhistoryRedisById,
-  clearAllDataProductRedis,
+  clearDataHistoryRedis,
+  getHistoryRedis,
 } = require("../middleware/redis");
 
 // [GET]
-router.get("/", authorization, getAllHistory);
+router.get("/", authorization, getHistoryRedis, getAllHistory);
 router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById); //:id ->menandakan id yg dijalankan pada query param
 
 // [POST]
 router.post("/", authorization, postHistory);
 router.post("/CheckOut", authorization, CheckOut);
 // [PATCH/PUT]
-router.patch("/:id", authorization, clearhistoryRedisById, patchHistory);
+router.patch("/:id", authorization, clearDataHistoryRedis, patchHistory);
 
 module.exports = router;

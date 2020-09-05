@@ -14,7 +14,10 @@ module.exports = {
   getAllCategory: async (request, response) => {
     try {
       const result = await getAllCategory();
-      client.set("getcategory", JSON.stringify(result));
+      client.set(
+        `getcategory:${JSON.stringify(request.query)}`,
+        JSON.stringify(result)
+      );
       return helper.response(response, 200, "Success Get Category", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request!", error);
@@ -22,9 +25,8 @@ module.exports = {
   },
   getCategoryById: async (request, response) => {
     try {
-      // const id = request.params.id
       const { id } = request.params;
-      const result = await getCategoryById(id); //(id) dilempar ke model
+      const result = await getCategoryById(id);
       if (result.length > 0) {
         client.setex(`getcategorybyid:${id}`, 10000, JSON.stringify(result));
         return helper.response(

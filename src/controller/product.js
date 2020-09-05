@@ -54,12 +54,15 @@ module.exports = {
       prevLink: prevLink && `http://127.0.0.1:3001/product?${prevLink}`,
       nextLink: nextLink && `http://127.0.0.1:3001/product?${nextLink}`,
     };
-
-    const withOutSort = await getWithOutSort(limit, offset);
-    const result = await getProduct(sort, limit, offset, ascdsc);
     //proses set data result ke redis
     try {
-      client.set("getproduct", JSON.stringify(result));
+      const withOutSort = await getWithOutSort(limit, offset);
+      const result = await getProduct(sort, limit, offset, ascdsc);
+      const newData = { result, pageInfo };
+      client.set(
+        `getproduct:${JSON.stringify(request.query)}`,
+        JSON.stringify(newData)
+      );
       if (typeof sort === "undefined") {
         return helper.response(
           response,
@@ -197,9 +200,15 @@ module.exports = {
       const { id } = request.params;
       const cekId = await getProductById(id);
       if (cekId.length > 0) {
-        fs.unlink(`./uploads/${cekId[0].product_image}`, function (err) {
-          if (err) throw err;
-          console.log("file deleted...");
+        fs.unlink(`./uploads/${cekId[0].product_image}`, function (
+          error,
+          result
+        ) {
+          if (!error) {
+            console.log(result);
+          } else {
+            console.log(error);
+          }
         });
         const result = await deleteProduct(id);
         return helper.response(response, 201, "Product Deleted", result);

@@ -8,7 +8,10 @@ module.exports = {
   getAllOrders: async (request, response) => {
     try {
       const result = await getAllOrders();
-      client.set("getorders", JSON.stringify(result));
+      client.set(
+        `getorders:${JSON.stringify(request.query)}`,
+        JSON.stringify(result)
+      );
       return helper.response(response, 200, "Success Get Order", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request!", error);
