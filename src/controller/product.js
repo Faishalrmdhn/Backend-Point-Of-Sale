@@ -109,8 +109,6 @@ module.exports = {
     try {
       const { name, limit } = request.query;
       const result = await getProductByName(name, limit);
-      console.log(name);
-      console.log(limit);
       if (result.length > 0) {
         return helper.response(
           response,
@@ -130,7 +128,7 @@ module.exports = {
     }
   },
   postProduct: async (request, response) => {
-    console.log(request.file);
+    // console.log(request.file);
     try {
       const {
         product_name,
@@ -147,7 +145,7 @@ module.exports = {
         product_status,
         category_id,
       };
-      console.log(setData);
+      // console.log(setData);
       const result = await postProduct(setData);
       return helper.response(response, 201, "Product Created", result);
     } catch (error) {
@@ -166,14 +164,22 @@ module.exports = {
       const setData = {
         product_name,
         product_price,
+        product_image: request.file === undefined ? "" : request.file.filename,
         product_updated_at: new Date(),
         product_status,
         category_id,
       };
       const checkId = await getProductById(id);
+      let fs = require("fs");
       if (checkId.length > 0) {
         const result = await patchProduct(setData, id);
-        return helper.response(response, 201, "Product Updated", result); //ingin menampilkan apa?
+
+        console.log(checkId);
+        fs.unlink(`./uploads/${checkId[0].product_image}`, function (err) {
+          if (err) throw err;
+          console.log("file deleted...");
+        });
+        return helper.response(response, 201, "Product Updated", result);
       } else {
         return helper.response(
           response,
@@ -187,9 +193,14 @@ module.exports = {
   },
   deleteProduct: async (request, response) => {
     try {
+      let fs = require("fs");
       const { id } = request.params;
       const cekId = await getProductById(id);
       if (cekId.length > 0) {
+        fs.unlink(`./uploads/${cekId[0].product_image}`, function (err) {
+          if (err) throw err;
+          console.log("file deleted...");
+        });
         const result = await deleteProduct(id);
         return helper.response(response, 201, "Product Deleted", result);
       } else {

@@ -98,7 +98,6 @@ module.exports = {
   },
   activateAccount: async (request, response) => {
     try {
-      const { id } = request.params;
       const { user_email, user_name, user_role, user_status } = request.body;
       const setData = {
         user_email,
@@ -109,9 +108,17 @@ module.exports = {
 
       const check = await checkUser(user_email);
       if (check.length >= 1) {
-        // console.log(check);
-        const result = await activateAccount(setData, id);
-        return helper.response(response, 200, "Account is active now!", result);
+        const result = await activateAccount(setData, user_email);
+        if (result.user_status == 1) {
+          return helper.response(
+            response,
+            200,
+            "Account is active now!",
+            result
+          );
+        } else {
+          return helper.response(response, 400, "Account is not active now!");
+        }
       } else {
         return helper.response(response, 400, "Wrong Data!");
       }

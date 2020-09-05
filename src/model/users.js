@@ -29,19 +29,21 @@ module.exports = {
       );
     });
   },
-  activateAccount: (setData, id) => {
+  activateAccount: (setData, user_email) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE user SET ? WHERE user_id = ?",
-        [setData, id],
+        "UPDATE user SET ? WHERE user_email = ?",
+        [setData, user_email],
         (error, result) => {
           if (!error) {
-            const newResult = {
-              product_id: id,
-              ...setData,
-            };
-            delete newResult.user_password;
-            resolve(newResult);
+            // const newResult = {
+            //   user_id: id,
+            //   ...setData,
+            // };
+            // delete newResult.user_password;
+            // resolve(newResult);
+            resolve(setData);
+            // console.log(setData);
           } else {
             reject(new Error(error));
           }

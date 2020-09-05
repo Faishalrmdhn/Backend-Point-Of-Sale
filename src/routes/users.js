@@ -7,6 +7,6 @@ const {
 
 router.post("/register", registerUser);
 router.get("/login", loginUser);
-router.patch("/admin/:id", activateAccount);
+router.patch("/admin", activateAccount);
 
 module.exports = router;
