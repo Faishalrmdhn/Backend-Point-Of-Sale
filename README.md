@@ -1,7 +1,7 @@
 <h1 align="center">ExpressJS - #PointofSale RESTfull API</h1>
 
-PointofSale. 
-test[More about Express](https://en.wikipedia.org/wiki/Express.js)
+ElCapp-Point of Sale. 
+ExpressJS[More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
