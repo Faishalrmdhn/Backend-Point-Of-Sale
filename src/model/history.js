@@ -100,4 +100,14 @@ module.exports = {
       );
     });
   },
-}; //tutup semua
+  getTodayHistory: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT DATE(history_created_at) as date, sum(history_subtotal) as subtotal FROM history WHERE DATE(history_created_at) = DATE(NOW()) AND YEAR(history_created_at) = YEAR(NOW()) GROUP BY DATE(history_created_at)",
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
+}; 

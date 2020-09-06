@@ -7,6 +7,7 @@ const {
   getWithOutSort,
   getMonthHistory,
   getYearHistory,
+  getTodayHistory
 } = require("../model/history");
 const { postOrders, getOrdersById } = require("../model/orders");
 const { getProductById } = require("../model/product");
@@ -46,6 +47,7 @@ module.exports = {
     let totalData = await getHistoryCount();
     let getMonth = await getMonthHistory();
     let getYear = await getYearHistory();
+    let getToday = await getTodayHistory()
     let totalPage = Math.ceil(totalData / limit);
     let offset = page * limit - limit;
     let prevLink = getPrevLink(page, request.query);
@@ -59,6 +61,7 @@ module.exports = {
       nextLink: nextLink && `http://127.0.0.1:3001/history?${nextLink}`,
       getMonth,
       getYear,
+      getToday
     };
     try {
       if (typeof request.query.sort === "undefined") {
