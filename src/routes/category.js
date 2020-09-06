@@ -13,13 +13,13 @@ const {
   getCategoryRedis,
 } = require("../middleware/redis");
 
-router.get("/", authorization, getCategoryRedis, getAllCategory);
-router.get("/:id", authorization, getCategoryByIdRedis, getCategoryById);
+router.get("/", getCategoryRedis, getAllCategory); //authorization
+router.get("/:id",  getCategoryByIdRedis, getCategoryById); //authorization
 
-router.post("/", authorization, postCategory);
+router.post("/",  postCategory); //authorization
 
-router.patch("/:id", authorization, clearDataCategoryRedis, patchCategory);
+router.patch("/:id",  clearDataCategoryRedis, patchCategory); //authorization
 
-router.delete("/:id", authorization, clearDataCategoryRedis, deleteCategory);
+router.delete("/:id", clearDataCategoryRedis, deleteCategory); //authorization
 
 module.exports = router;

@@ -14,13 +14,13 @@ const {
 } = require("../middleware/redis");
 
 // [GET]
-router.get("/", authorization, getHistoryRedis, getAllHistory);
-router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById); //:id ->menandakan id yg dijalankan pada query param
+router.get("/", getAllHistory); //authorization getHistoryRedis
+router.get("/:id", getHistoryByIdRedis, getHistoryById); //authorization
 
 // [POST]
-router.post("/", authorization, postHistory);
-router.post("/CheckOut", authorization, CheckOut);
+router.post("/", postHistory);  //authorization
+router.post("/CheckOut", CheckOut); // authorization
 // [PATCH/PUT]
-router.patch("/:id", authorization, clearDataHistoryRedis, patchHistory);
+router.patch("/:id", clearDataHistoryRedis, patchHistory);//authorization
 
 module.exports = router;

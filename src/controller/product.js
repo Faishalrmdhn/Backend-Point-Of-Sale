@@ -56,14 +56,13 @@ module.exports = {
     };
 
     try {
-      const withOutSort = await getWithOutSort(limit, offset);
-      const result = await getProduct(sort, limit, offset, ascdsc);
-      const newData = { result, pageInfo };
+      if (typeof sort === "undefined") {
+        const withOutSort = await getWithOutSort(limit, offset);
+          const newData = { withOutSort, pageInfo };
       client.set(
         `getproduct:${JSON.stringify(request.query)}`,
         JSON.stringify(newData)
       );
-      if (typeof sort === "undefined") {
         return helper.response(
           response,
           200,
@@ -73,13 +72,12 @@ module.exports = {
         );
       } else {
         const result = await getProduct(sort, limit, offset, ascdsc);
-        return helper.response(
-          response,
-          200,
-          `Success Get Product with sort by ${sort}`,
-          result,
-          pageInfo
-        );
+         const newData = { result, pageInfo };
+      client.set(
+        `getproduct:${JSON.stringify(request.query)}`,
+        JSON.stringify(newData)
+      );
+        return helper.response(response,200,`Success Get Product with sort by ${sort}`,result,pageInfo)
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request!", error);
