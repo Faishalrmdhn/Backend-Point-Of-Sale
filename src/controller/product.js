@@ -54,7 +54,7 @@ module.exports = {
       prevLink: prevLink && `http://127.0.0.1:3001/product?${prevLink}`,
       nextLink: nextLink && `http://127.0.0.1:3001/product?${nextLink}`,
     };
-    //proses set data result ke redis
+
     try {
       const withOutSort = await getWithOutSort(limit, offset);
       const result = await getProduct(sort, limit, offset, ascdsc);
@@ -90,7 +90,7 @@ module.exports = {
       const { id } = request.params;
       const result = await getProductById(id);
       if (result.length > 0) {
-        client.setex(`getproductbyid:${id}`, 10000, JSON.stringify(result)); //setex untuk expired get data
+        client.setex(`getproductbyid:${id}`, 10000, JSON.stringify(result));
         return helper.response(
           response,
           200,
@@ -146,7 +146,6 @@ module.exports = {
         product_status,
         category_id,
       };
-      // console.log(setData);
       const result = await postProduct(setData);
       console.log(result);
       return helper.response(response, 201, "Product Created", result);
