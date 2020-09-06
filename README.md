@@ -43,21 +43,40 @@ DB_HOST=localhost // Database host
 
 **1. GET**
 
-- `/product`(Get all product)
+- `/product`(Get all product include sorting, pagination & limit)
+- `/product/:id`(Get all product by id)
+- `/product/search/name`(Get all product by name)
+- `/category`(Get all category)
+- `/category/:id`(Get all category by id)
+- `/history`(Get all history)
+- `/category/:id`(Get all history by id)
+- `/orders`(Get all orders)
+- `/orders/:id`(Get all orders by id)
+- `/users/login`(Get all registered acount)
 
 **2. POST**
 
 - `/product` (Post product)
-  - `{ "product_name": "Kipas", "category_id": 2, "product_harga": 50000 , "product_status" : 1 | 0}`
 
-**3. PATCH**
+  - `{ "product_name": "Wiener Schnitzel", "category_id": 1 | 2, "product_price": 69000 , "product_status" : 1 | 0,"product_image : item9.png"}`
+
+- `/category` (Post category)
+- `/history` (Post history)
+- `/CheckOut` (Post checkout data orders)
+- `/orders` (Post orders)
+- `/users/register` (Post data registered account)
+
+  **3. PATCH**
 
 - `/product/:id` (Update product by id)
-
   - `{"product_name" : "Mouse", "category_id" : 1, "product_harga" : 100000, "product_status" : 1 | 0}`
+- `/category/:id` (Update category by id)
+- `/history/:id` (Update history by id)
+- `/users/admin` (Admin can update & controlling cashier status to active/inactive)
 
 **4. DELETE**
 
 - `/product/:id` (Delete product by id)
+- `/category/:id` (Delete category by id)
 
 ---unfinished ReadMe---

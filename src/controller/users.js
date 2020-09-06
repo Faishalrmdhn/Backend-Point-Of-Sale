@@ -72,7 +72,7 @@ module.exports = {
               user_role,
               user_status,
             };
-            const token = jwt.sign(payLoad, "Rahasia", { expiresIn: "100h" });
+            const token = jwt.sign(payLoad, "Rahasia", { expiresIn: "10h" });
             payLoad = { ...payLoad, token };
             console.log("success login");
             return helper.response(response, 200, "Successfull Login", payLoad);
