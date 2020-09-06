@@ -24,7 +24,7 @@ app.use((request, response, next) => {
 app.use("/", routerNavigation);
 
 app.get("*", (request, response) => {
-  response.status(404).send("Path Not Found"); //resp utk url yang salah/tidak tersedia
+  response.status(404).send("Path Not Found");
 });
 
 app.listen(3001, "127.0.0.1", () => {

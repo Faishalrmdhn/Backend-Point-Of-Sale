@@ -131,7 +131,6 @@ module.exports = {
     }
   },
   postProduct: async (request, response) => {
-    // console.log(request.file);
     try {
       const {
         product_name,
@@ -140,7 +139,6 @@ module.exports = {
         category_id,
       } = request.body;
       const setData = {
-        //kiri mysql kanan postman
         product_name,
         product_price,
         product_image: request.file === undefined ? "" : request.file.filename,
@@ -150,6 +148,7 @@ module.exports = {
       };
       // console.log(setData);
       const result = await postProduct(setData);
+      console.log(result);
       return helper.response(response, 201, "Product Created", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);

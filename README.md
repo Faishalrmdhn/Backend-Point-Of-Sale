@@ -1,12 +1,12 @@
-<h1 align="center">ExpressJS - #PointofSale RESTfull API</h1>
+<h1 align="center">ExpressJS - #Elcapp PointofSale RESTfull API</h1>
 
-ElCapp-Point of Sale. 
+ElCapp-Point of Sale.
 ExpressJS[More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
-[![Express.js](https://img.shields.io/badge/Express.js-4.x-orange.svg?style=rounded-square)](https://expressjs.com/en/starter/installing.html)
-[![Node.js](https://img.shields.io/badge/Node.js-v.12.13-green.svg?style=rounded-square)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-4.17.1-orange.svg?style=rounded-square)](https://expressjs.com/en/starter/installing.html)
+[![Node.js](https://img.shields.io/badge/Node.js-v.12.18.2-green.svg?style=rounded-square)](https://nodejs.org/)
 
 ## Requirements
 
@@ -14,6 +14,11 @@ ExpressJS[More about Express](https://en.wikipedia.org/wiki/Express.js)
 2. Node_modules
 3. <a href="https://www.getpostman.com/">Postman</a>
 4. Web Server (ex. localhost)
+5. <a href="https://www.npmjs.com/package/bcrypt">bcrypt</a>
+6. <a href="https://www.npmjs.com/package/jsonwebtoken">JSON Web Token</a>
+7. <a href="https://www.npmjs.com/package/multer">multer</a>
+8. MySQL
+9. <a href="https://www.npmjs.com/package/redis">Redis</a>
 
 ## How to run the app ?
 
