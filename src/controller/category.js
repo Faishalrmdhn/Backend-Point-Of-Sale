@@ -73,7 +73,7 @@ module.exports = {
       const checkId = await getCategoryById(id);
       if (checkId.length > 0) {
         const result = await patchCategory(setData, id);
-        return helper.response(response, 201, "Category Updated", result);
+        return helper.response(response, 200, "Category Updated", result);
       } else {
         return helper.response(
           response,
