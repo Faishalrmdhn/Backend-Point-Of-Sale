@@ -48,16 +48,16 @@ module.exports = {
     try {
       const { user_email, user_password } = request.body;
       const checkDataUser = await checkUser(user_email);
-      // ========================================================================================
+      
       if (checkDataUser.length >= 1) {
         if (checkDataUser[0].user_status == 1) {
-          //proses kedua
+       
           const checkPassword = bcrypt.compareSync(
             user_password,
             checkDataUser[0].user_password
           );
           if (checkPassword) {
-            //   proses 3 = set JWT
+            
             const {
               user_id,
               user_email,
@@ -72,7 +72,7 @@ module.exports = {
               user_role,
               user_status,
             };
-            const token = jwt.sign(payLoad, "Rahasia", { expiresIn: "10h" });
+            const token = jwt.sign(payLoad, "Rahasia", { expiresIn: "100h" });
             payLoad = { ...payLoad, token };
             console.log("success login");
             return helper.response(response, 200, "Successfull Login", payLoad);

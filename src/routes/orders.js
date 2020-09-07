@@ -7,9 +7,9 @@ const {
 const { authorization } = require("../middleware/auth");
 const { getOrdersRedis } = require("../middleware/redis");
 
-router.get("/", getOrdersRedis, getAllOrders); //authorization
-router.get("/:id", getOrdersById); //authorization
+router.get("/", authorization,getOrdersRedis, getAllOrders); 
+router.get("/:id", authorization,getOrdersById); 
 
-router.post("/", postOrders); //authorization
+router.post("/", authorization,postOrders); 
 
 module.exports = router;

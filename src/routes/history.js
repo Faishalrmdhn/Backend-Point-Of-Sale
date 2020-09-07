@@ -14,13 +14,13 @@ const {
 } = require("../middleware/redis");
 
 // [GET]
-router.get("/", getAllHistory); //authorization getHistoryRedis
-router.get("/:id", getHistoryByIdRedis, getHistoryById); //authorization
+router.get("/", authorization,getHistoryRedis,getAllHistory); 
+router.get("/:id", authorization,getHistoryByIdRedis, getHistoryById); 
 
 // [POST]
-router.post("/", postHistory);  //authorization
-router.post("/CheckOut", CheckOut); // authorization
+router.post("/", authorization,postHistory);  
+router.post("/CheckOut", authorization,CheckOut);  
 // [PATCH/PUT]
-router.patch("/:id", clearDataHistoryRedis, patchHistory);//authorization
+router.patch("/:id",authorization, clearDataHistoryRedis, patchHistory);
 
 module.exports = router;

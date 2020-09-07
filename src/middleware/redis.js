@@ -154,7 +154,7 @@ module.exports = {
     });
   },
   clearDataHistoryRedis: (request, response, next) => {
-    client.keys("getHistory*", (err, keys) => {
+    client.keys("gethistory*", (err, keys) => {
       if (keys.length > 0) {
         keys.forEach((value) => {
           client.del(value);
