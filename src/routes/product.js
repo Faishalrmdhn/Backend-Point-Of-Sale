@@ -7,7 +7,10 @@ const {
   deleteProduct,
   getProductByName,
 } = require("../controller/product");
-const { authorization } = require("../middleware/auth");
+const {
+  authorization,
+  authorizationSuperAdmin,
+} = require("../middleware/auth");
 const {
   getProductByIdRedis,
   clearDataProductRedis,
@@ -15,14 +18,25 @@ const {
 } = require("../middleware/redis");
 const uploadImage = require("../middleware/multer");
 
-router.get("/",authorization, getProductRedis, getAllProduct); 
-router.get("/:id", authorization, getProductByIdRedis, getProductById); 
-router.get("/search/name", authorization, getProductByName); 
+router.get("/", authorization, getProductRedis, getAllProduct);
+router.get("/:id", authorization, getProductByIdRedis, getProductById);
+router.get("/search/name", authorization, getProductByName);
 
-router.post("/",authorization,uploadImage, postProduct); 
+router.post("/", authorization, uploadImage, postProduct);
 
-router.patch("/:id", authorization,uploadImage, clearDataProductRedis, patchProduct); 
+router.patch(
+  "/:id",
+  authorizationSuperAdmin,
+  uploadImage,
+  clearDataProductRedis,
+  patchProduct
+);
 
-router.delete("/:id", authorization,clearDataProductRedis, deleteProduct); 
+router.delete(
+  "/:id",
+  authorizationSuperAdmin,
+  clearDataProductRedis,
+  deleteProduct
+);
 
 module.exports = router;

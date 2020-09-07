@@ -6,20 +6,33 @@ const {
   patchCategory,
   deleteCategory,
 } = require("../controller/category");
-const { authorization } = require("../middleware/auth");
+const {
+  authorization,
+  authorizationSuperAdmin,
+} = require("../middleware/auth");
 const {
   getCategoryByIdRedis,
   clearDataCategoryRedis,
   getCategoryRedis,
 } = require("../middleware/redis");
 
-router.get("/", authorization,getCategoryRedis, getAllCategory); 
-router.get("/:id", authorization, getCategoryByIdRedis, getCategoryById); 
+router.get("/", authorization, getCategoryRedis, getAllCategory);
+router.get("/:id", authorization, getCategoryByIdRedis, getCategoryById);
 
-router.post("/", authorization, postCategory); 
+router.post("/", authorization, postCategory);
 
-router.patch("/:id", authorization, clearDataCategoryRedis, patchCategory); 
+router.patch(
+  "/:id",
+  authorizationSuperAdmin,
+  clearDataCategoryRedis,
+  patchCategory
+);
 
-router.delete("/:id", authorization,clearDataCategoryRedis, deleteCategory); 
+router.delete(
+  "/:id",
+  authorizationSuperAdmin,
+  clearDataCategoryRedis,
+  deleteCategory
+);
 
 module.exports = router;

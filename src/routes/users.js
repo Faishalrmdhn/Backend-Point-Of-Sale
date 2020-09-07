@@ -5,10 +5,10 @@ const {
   activateAccount,
 } = require("../controller/users");
 
-const {authorization} =require('../middleware/auth')
+const { authorizationSuperAdmin } = require("../middleware/auth");
 
 router.post("/register", registerUser);
 router.get("/login", loginUser);
-router.patch("/admin", activateAccount);//authorization
+router.patch("/admin", authorizationSuperAdmin, activateAccount); //
 
 module.exports = router;

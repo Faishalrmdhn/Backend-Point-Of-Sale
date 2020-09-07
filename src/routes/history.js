@@ -6,7 +6,10 @@ const {
   CheckOut,
   patchHistory,
 } = require("../controller/history");
-const { authorization } = require("../middleware/auth");
+const {
+  authorization,
+  authorizationSuperAdmin,
+} = require("../middleware/auth");
 const {
   getHistoryByIdRedis,
   clearDataHistoryRedis,
@@ -14,13 +17,18 @@ const {
 } = require("../middleware/redis");
 
 // [GET]
-router.get("/", authorization,getHistoryRedis,getAllHistory); 
-router.get("/:id", authorization,getHistoryByIdRedis, getHistoryById); 
+router.get("/", authorization, getHistoryRedis, getAllHistory);
+router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById);
 
 // [POST]
-router.post("/", authorization,postHistory);  
-router.post("/CheckOut", authorization,CheckOut);  
+router.post("/", authorization, postHistory);
+router.post("/CheckOut", authorization, CheckOut);
 // [PATCH/PUT]
-router.patch("/:id",authorization, clearDataHistoryRedis, patchHistory);
+router.patch(
+  "/:id",
+  authorizationSuperAdmin,
+  clearDataHistoryRedis,
+  patchHistory
+);
 
 module.exports = router;
