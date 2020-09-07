@@ -17,7 +17,7 @@ module.exports = {
       });
     });
   },
-  // checkEmail :
+
   checkUser: (email) => {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -36,14 +36,7 @@ module.exports = {
         [setData, user_email],
         (error, result) => {
           if (!error) {
-            // const newResult = {
-            //   user_id: id,
-            //   ...setData,
-            // };
-            // delete newResult.user_password;
-            // resolve(newResult);
             resolve(setData);
-            // console.log(setData);
           } else {
             reject(new Error(error));
           }

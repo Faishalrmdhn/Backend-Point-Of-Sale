@@ -37,7 +37,7 @@ module.exports = {
         `SELECT * FROM history WHERE history_id = ?`,
         id,
         (error, result) => {
-          !error ? resolve(result) : reject(new Error(error)); //product_id dari postman
+          !error ? resolve(result) : reject(new Error(error));
         }
       );
     });
@@ -110,4 +110,4 @@ module.exports = {
       );
     });
   },
-}; 
+};

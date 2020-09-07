@@ -14,7 +14,7 @@ module.exports = {
         `SELECT * FROM category WHERE category_id = ?`,
         id,
         (error, result) => {
-          !error ? resolve(result) : reject(new Error(error)); //category_id dari postman
+          !error ? resolve(result) : reject(new Error(error));
         }
       );
     });
@@ -26,7 +26,6 @@ module.exports = {
         setData,
         (error, result) => {
           if (!error) {
-            //memasukkan apa yg diinputkan user
             const newResult = {
               category_id: result.insertId,
               ...setData,

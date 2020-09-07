@@ -42,7 +42,6 @@ module.exports = {
           `Category by ID : ${id} Not Found`
         );
       }
-      // console.log(result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
     }

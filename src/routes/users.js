@@ -8,7 +8,7 @@ const {
 const { authorizationSuperAdmin } = require("../middleware/auth");
 
 router.post("/register", registerUser);
-router.get("/login", loginUser);
-router.patch("/admin", authorizationSuperAdmin, activateAccount); //
+router.post("/login", loginUser);
+router.patch("/admin", authorizationSuperAdmin, activateAccount);
 
 module.exports = router;

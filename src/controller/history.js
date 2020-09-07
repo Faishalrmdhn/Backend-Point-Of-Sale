@@ -7,7 +7,7 @@ const {
   getWithOutSort,
   getMonthHistory,
   getYearHistory,
-  getTodayHistory
+  getTodayHistory,
 } = require("../model/history");
 const { postOrders, getOrdersById } = require("../model/orders");
 const { getProductById } = require("../model/product");
@@ -47,7 +47,7 @@ module.exports = {
     let totalData = await getHistoryCount();
     let getMonth = await getMonthHistory();
     let getYear = await getYearHistory();
-    let getToday = await getTodayHistory()
+    let getToday = await getTodayHistory();
     let totalPage = Math.ceil(totalData / limit);
     let offset = page * limit - limit;
     let prevLink = getPrevLink(page, request.query);
@@ -61,7 +61,7 @@ module.exports = {
       nextLink: nextLink && `http://127.0.0.1:3001/history?${nextLink}`,
       getMonth,
       getYear,
-      getToday
+      getToday,
     };
     try {
       if (typeof request.query.sort === "undefined") {
@@ -139,7 +139,6 @@ module.exports = {
     }
   },
   CheckOut: async (request, response) => {
-    // console.log(request.body);
     try {
       let history_subtotal = 0;
       let invoice = Math.floor(Math.random() * 1000000);
@@ -149,7 +148,6 @@ module.exports = {
         history_created_at: new Date(),
       };
       const result = await postHistory(setData);
-      //================================================//
       let idHistory = result.history_id;
       let totalPrice = 0;
       let totalResult = {
@@ -174,11 +172,10 @@ module.exports = {
         totalPrice += value.order_qty * Number(productPrice);
 
         const result = await postOrders(setData);
-        request.body.history[index].product_name = JSON.parse(productName); //output
+        request.body.history[index].product_name = JSON.parse(productName);
       });
-      //================================================//
       setTimeout(async () => {
-        totalResult.subtotal = totalPrice + totalPrice * 0.1; //add tax
+        totalResult.subtotal = totalPrice + totalPrice * 0.1;
         await patchHistory(
           {
             history_subtotal: totalPrice,

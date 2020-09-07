@@ -5,7 +5,6 @@ module.exports = {
   authorization: (request, response, next) => {
     let token = request.headers.authorization;
     if (token) {
-      // validasi token jwt
       token = token.split(" ")[1];
       jwt.verify(token, "Rahasia", (error, result) => {
         if (

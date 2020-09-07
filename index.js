@@ -28,5 +28,5 @@ app.get("*", (request, response) => {
 });
 
 app.listen(3001, "127.0.0.1", () => {
-  console.log("Express app is listening on Host: 127.0.0.1 and port: 3001"); //menentukan port yg terhubung pada express
+  console.log("Express app is listening on Host: 127.0.0.1 and port: 3001");
 });

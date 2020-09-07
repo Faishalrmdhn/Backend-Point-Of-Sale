@@ -85,9 +85,7 @@ module.exports = {
             "Your Account is inactive. Please contact your admin"
           );
         }
-      }
-      // ========================================================================================
-      else {
+      } else {
         return helper.response(response, 400, "Email Not Registered");
       }
     } catch (error) {
