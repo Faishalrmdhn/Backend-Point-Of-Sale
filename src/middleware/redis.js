@@ -119,20 +119,6 @@ module.exports = {
       }
     );
   },
-  clearhistoryRedisById: (request, response, next) => {
-    const { id } = request.params;
-    client.del(`gethistorybyid:${id}`, (error, result) => {
-      console.log(result);
-      next();
-    });
-  },
-  clearCategoryRedisById: (request, response, next) => {
-    const { id } = request.params;
-    client.del(`getcategorybyid:${id}`, (error, result) => {
-      console.log(result);
-      next();
-    });
-  },
   clearDataProductRedis: (request, response, next) => {
     client.keys("getproduct*", (err, keys) => {
       if (keys.length > 0) {

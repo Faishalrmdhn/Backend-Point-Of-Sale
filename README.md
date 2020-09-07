@@ -1,7 +1,24 @@
 <h1 align="center">ExpressJS - #Elcapp PointofSale RESTfull API</h1>
 
-#background_projek.
-ExpressJS[More about Express](https://en.wikipedia.org/wiki/Express.js)
+## Project_Background
+
+in a store, the cashier is a measure of business development at the store. The cashier is the gate for revenue entry in a store.
+
+Often the use of offline cashiers is faced with bookkeeping with so much data, not to mention if you want to analyze the development of the business, of course to determine how much daily, monthly and yearly income will be very troublesome.
+
+So i built the ElCapp. Elcapp is a cashier application and mostly known as Point Of Sale Application. This App is provide your need to level up your business. With this App, you can monitor sales transactions that occur, without having to be behind a cash register or store location that you have. What's more, besides functioning as monitoring, the cashier application can also allow you to get real-time sales data analysis.
+
+Some of the advantages of this application are :
+
+1. Time Efficiency
+2. Real time business analysis
+3. Control your cashflow
+4. Cheap Maintenance fee
+5. Build more trust to your customer
+6. Help increase the profit
+7. Minimalize error in your report data
+8. Can access in anywhere you want
+9. Can use in any device
 
 ## Built With
 
