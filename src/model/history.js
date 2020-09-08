@@ -110,4 +110,14 @@ module.exports = {
       );
     });
   },
+  getOrders: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT COUNT(history_id) AS totalOrders FROM history",
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
 };

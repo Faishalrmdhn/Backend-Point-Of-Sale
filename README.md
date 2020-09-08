@@ -53,7 +53,14 @@ Some of the advantages of this application are :
 Open .env file on your favorite code editor, and copy paste this code below :
 
 ```
-DB_HOST=localhost // Database host
+#KEYDATABASE
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=
+DB_DATABASE = onlineshop
+
+IP=127.0.0.1
+PORT=3001
 ```
 
 ## End Point

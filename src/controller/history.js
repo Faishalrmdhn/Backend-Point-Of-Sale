@@ -8,6 +8,7 @@ const {
   getMonthHistory,
   getYearHistory,
   getTodayHistory,
+  getOrders,
 } = require("../model/history");
 const { postOrders, getOrdersById } = require("../model/orders");
 const { getProductById } = require("../model/product");
@@ -68,7 +69,7 @@ module.exports = {
         const withOutSort = await getWithOutSort(limit, offset);
         const newData = { withOutSort, pageInfo };
         client.set(
-          `gethistory:${JSON.stringify(request.query)}`,
+          `gethistorywithoutsort:${JSON.stringify(request.query)}`,
           JSON.stringify(newData)
         );
         return helper.response(
@@ -80,10 +81,10 @@ module.exports = {
         );
       } else {
         const result = await getHistory(sort, limit, offset, ascdsc);
-        const newData = { result, pageInfo };
+        const newData1 = { result, pageInfo };
         client.set(
           `gethistory:${JSON.stringify(request.query)}`,
-          JSON.stringify(newData)
+          JSON.stringify(newData1)
         );
         return helper.response(
           response,
@@ -213,4 +214,43 @@ module.exports = {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
+  getHistoryOrder: async (request, response) => {
+    const result = await getOrders();
+    try {
+      return helper.response(
+        response,
+        200,
+        "Successfull Get Total Orders",
+        result
+      );
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  // getMonthHistory: async (request, response) => {
+  //   const result = await getMonthHistory();
+  //   try {
+  //     return helper.response(
+  //       response,
+  //       200,
+  //       "Successfull Get Monthly History",
+  //       result
+  //     );
+  //   } catch (error) {
+  //     return helper.response(response, 400, "Bad Request", error);
+  //   }
+  // },
+  // getYearHistory: async (request, response) => {
+  //   const result = await getYearHistory();
+  //   try {
+  //     return helper.response(
+  //       response,
+  //       200,
+  //       "Successfull Get Yearly History",
+  //       result
+  //     );
+  //   } catch (error) {
+  //     return helper.response(response, 400, "Bad Request", error);
+  //   }
+  // },
 };
