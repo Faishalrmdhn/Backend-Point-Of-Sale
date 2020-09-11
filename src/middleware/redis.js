@@ -51,7 +51,7 @@ module.exports = {
             200,
             "Successfull Get Data",
             newResult.result,
-            newResult.page
+            newResult.pageInfo
           );
         } else {
           next();
@@ -71,7 +71,7 @@ module.exports = {
             200,
             "Successfull Get Data",
             newResult.result,
-            newResult.page
+            newResult.pageInfo
           );
         } else {
           next();
