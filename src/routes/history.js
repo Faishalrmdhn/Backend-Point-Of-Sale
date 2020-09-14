@@ -7,6 +7,7 @@ const {
   patchHistory,
   getHistoryOrder,
   getMonthHistory,
+  recentOrderHistory,
 } = require("../controller/history");
 const {
   authorization,
@@ -20,7 +21,8 @@ const {
 
 router.get("/", authorization, getHistoryRedis, getAllHistory);
 router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById);
-router.get("/order/total", getHistoryOrder);
+router.get("/order/total", authorization, getHistoryOrder);
+router.get("/order/recent", authorization, recentOrderHistory);
 // router.get("/income/month", getMonthHistory);
 
 router.post("/", authorization, postHistory);

@@ -9,6 +9,8 @@ const {
   getYearHistory,
   getTodayHistory,
   getOrders,
+  recentOrderHistory,
+  getHistoryOrdersById,
 } = require("../model/history");
 const { postOrders, getOrdersById } = require("../model/orders");
 const { getProductById } = require("../model/product");
@@ -81,6 +83,9 @@ module.exports = {
         );
       } else {
         const result = await getHistory(sort, limit, offset, ascdsc);
+        for (let i = 0; i < result.length; i++) {
+          result[i].items = await getOrdersById(result[i].history_id);
+        }
         const newData1 = { result, pageInfo };
         client.set(
           `gethistory:${JSON.stringify(request.query)}`,
@@ -162,10 +167,12 @@ module.exports = {
         const products = await getProductById(value.product_id);
         const productName = JSON.stringify(products[0].product_name);
         const productPrice = JSON.stringify(products[0].product_price);
-
+        // console.log(productName);
+        // console.log(value.product_name);
         const setData = {
           history_id: idHistory,
           product_id: value.product_id,
+          product_name: productName,
           order_qty: value.order_qty,
           order_price: Number(productPrice),
           order_created_at: new Date(),
@@ -221,6 +228,19 @@ module.exports = {
         response,
         200,
         "Successfull Get Total Orders",
+        result
+      );
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  recentOrderHistory: async (request, response) => {
+    const result = await recentOrderHistory();
+    try {
+      return helper.response(
+        response,
+        200,
+        "Successfull Get Recent Orders",
         result
       );
     } catch (error) {

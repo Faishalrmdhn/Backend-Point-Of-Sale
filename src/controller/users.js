@@ -1,9 +1,64 @@
 const bcrypt = require("bcrypt");
 const helper = require("../helper/index");
-const { postUser, checkUser, activateAccount } = require("../model/users");
+const {
+  postUser,
+  checkUser,
+  activateAccount,
+  getAllUser,
+} = require("../model/users");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
+  getAllUser: async (request, response) => {
+    try {
+      const result = await getAllUser();
+      // client.set(
+      //   `getuser:${JSON.stringify(request.query)}`,
+      //   JSON.stringify(result)
+      // );
+      return helper.response(response, 200, "Success Get User", result);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request!", error);
+    }
+  },
+  // patchUser: async (request, response) => {
+  //   try {
+  //     const { id } = request.params;
+  //     const {
+  //       product_name,
+  //       product_price,
+  //       product_status,
+  //       category_id,
+  //     } = request.body;
+  //     const setData = {
+  //       product_name,
+  //       product_price,
+  //       product_image: request.file === undefined ? "" : request.file.filename,
+  //       product_updated_at: new Date(),
+  //       product_status,
+  //       category_id,
+  //     };
+  //     const checkId = await getProductById(id);
+  //     let fs = require("fs");
+  //     if (checkId.length > 0) {
+  //       const result = await patchProduct(setData, id);
+
+  //       fs.unlink(`./uploads/${checkId[0].product_image}`, function (err) {
+  //         if (err) throw err;
+  //         console.log("file deleted...");
+  //       });
+  //       return helper.response(response, 201, "Product Updated", result);
+  //     } else {
+  //       return helper.response(
+  //         response,
+  //         404,
+  //         `Product By Id : ${id} Not Found`
+  //       );
+  //     }
+  //   } catch (error) {
+  //     return helper.response(response, 400, "Bad Request", error);
+  //   }
+  // },
   registerUser: async (request, response) => {
     const { user_email, user_password, user_name } = request.body;
     const salt = bcrypt.genSaltSync(10);

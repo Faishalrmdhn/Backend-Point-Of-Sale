@@ -103,7 +103,7 @@ module.exports = {
   getTodayHistory: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT DATE(history_created_at) as date, sum(history_subtotal) as subtotal FROM history WHERE DATE(history_created_at) = DATE(NOW()) AND YEAR(history_created_at) = YEAR(NOW()) GROUP BY DATE(history_created_at)",
+        "SELECT DATE(history_created_at) as Date, sum(history_subtotal) as subtotal FROM history WHERE DATE(history_created_at) = DATE(NOW()) GROUP BY DATE(history_created_at)",
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
         }
@@ -120,4 +120,25 @@ module.exports = {
       );
     });
   },
+  recentOrderHistory: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM history WHERE YEARWEEK(history_created_at) = YEARWEEK(NOW())",
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
+  // getHistoryOrdersById: (id) => {
+  //   return new Promise((resolve, reject) => {
+  //     connection.query(
+  //       `SELECT * FROM orders WHERE history_id = ?`,
+  //       id,
+  //       (error, result) => {
+  //         !error ? resolve(result) : reject(new Error(error));
+  //       }
+  //     );
+  //   });
+  // },
 };
