@@ -65,7 +65,7 @@ PORT=3001
 
 ## End Point
 
-**See Documentation API [Here](https://www.getpostman.com/collections/5f61e1a3f6ac14d3892e)**
+**See Documentation API [Here](https://documenter.getpostman.com/view/12322022/TVRn2mEX)**
 
 ### License
 
