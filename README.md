@@ -1,8 +1,8 @@
-<h1 align="center">ExpressJS - #Elcapp PointofSale RESTfull API</h1>
+<h1 align="center">ExpressJS - Elcapp PointofSale RESTfull API</h1>
 
 ## Project_Background
 
-in a store, the cashier is a measure of business development at the store. The cashier is the gate for revenue entry in a store.
+In a store, the cashier is a measure of business development at the store. The cashier is the gate for revenue entry in a store.
 
 Often the use of offline cashiers is faced with bookkeeping with so much data, not to mention if you want to analyze the development of the business, of course to determine how much daily, monthly and yearly income will be very troublesome.
 
@@ -65,46 +65,8 @@ PORT=3001
 
 ## End Point
 
-**1. GET**
+**See Documentation API [Here](https://www.getpostman.com/collections/5f61e1a3f6ac14d3892e)**
 
-- `/product`(Get all product include sorting, pagination & limit)
-- `/product/:id`(Get all product by id)
-- `/product/search/name`(Get all product by name)
-- `/category`(Get all category)
-- `/category/:id`(Get all category by id)
-- `/history`(Get all history)
-- `/category/:id`(Get all history by id)
-- `/orders`(Get all orders)
-- `/orders/:id`(Get all orders by id)
-- `/users/login`(Get all registered acount)
+### License
 
-**2. POST**
-
-- `/product` (Post product)
-
-  - `{ "product_name": "Wiener Schnitzel", "category_id": 1 | 2, "product_price": 69000 , "product_status" : 1 | 0,"product_image : item9.png"}`
-
-- `/category` (Post category)
-- `/history` (Post history)
-- `/CheckOut` (Post checkout data orders)
-- `/orders` (Post orders)
-- `/users/register` (Post data registered account)
-
-  **3. PATCH**
-
-- `/product/:id` (Update product by id)
-  - `{"product_name" : "Mouse", "category_id" : 1, "product_harga" : 100000, "product_status" : 1 | 0}`
-- `/category/:id` (Update category by id)
-- `/history/:id` (Update history by id)
-- `/users/admin` (Admin can update & controlling cashier status to active/inactive)
-
-**4. DELETE**
-
-- `/product/:id` (Delete product by id)
-- `/category/:id` (Delete category by id)
-
-## Postman
-
-- https://web.postman.co/collections/12322022-7d363784-329d-4527-9208-1d232d26574a?version=latest&workspace=03fb1f6a-9425-44f5-808d-a75d7f6d3f7b
-
----unfinished ReadMe---
+© [M Faishal Ramadhan](https://github.com/Faishalrmdhn)
