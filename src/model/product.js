@@ -37,8 +37,6 @@ module.exports = {
         `SELECT * FROM product WHERE product_id = ?`,
         id,
         (error, result) => {
-          console.log(error)
-          console.log(result)
           !error ? resolve(result) : reject(new Error(error));
         }
       );

@@ -165,12 +165,12 @@ module.exports = {
       };
       console.log(request.body.history)
       request.body.history.map(async (value, index) => {
-        console.log(value)
+
         const products = await getProductById(value.product_id);
-        console.log(products)
+
         const productName = JSON.stringify(products[0].product_name);
         const productPrice = JSON.stringify(products[0].product_price);
-        console.log(productName);
+
         // console.log(value.product_name);
         const setData = {
           history_id: idHistory,
