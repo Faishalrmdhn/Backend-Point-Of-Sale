@@ -22,6 +22,8 @@ module.exports = {
   postOrders: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query("INSERT INTO orders SET ?", setData, (error, result) => {
+        console.log(error)
+        console.log(result)
         if (!error) {
           const newResult = {
             orders_id: result.insertId,
