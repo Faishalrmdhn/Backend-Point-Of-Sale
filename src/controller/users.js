@@ -12,10 +12,6 @@ module.exports = {
   getAllUser: async (request, response) => {
     try {
       const result = await getAllUser();
-      // client.set(
-      //   `getuser:${JSON.stringify(request.query)}`,
-      //   JSON.stringify(result)
-      // );
       return helper.response(response, 200, "Success Get User", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request!", error);
@@ -168,7 +164,7 @@ module.exports = {
             result
           );
         } else {
-          return helper.response(response, 400, "Account is not active now!");
+          return helper.response(response, 200, "Account is not active now!");
         }
       } else {
         return helper.response(response, 400, "Wrong Data!");
