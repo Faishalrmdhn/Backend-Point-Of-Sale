@@ -197,6 +197,7 @@ module.exports = {
         return helper.response(response, 201, "history created", totalResult);
       }, 500);
     } catch (error) {
+      console.log(error)
       return helper.response(response, 400, "Bad Request", error);
     }
   },
