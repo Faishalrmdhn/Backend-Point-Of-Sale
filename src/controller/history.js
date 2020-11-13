@@ -10,6 +10,7 @@ const {
   getTodayHistory,
   getOrders,
   recentOrderHistory,
+  getYearIncomeHistory,
   getHistoryOrdersById,
 } = require("../model/history");
 const { postOrders, getOrdersById } = require("../model/orders");
@@ -50,7 +51,6 @@ module.exports = {
     let totalData = await getHistoryCount();
     let getMonth = await getMonthHistory();
     let getYear = await getYearHistory();
-    let getToday = await getTodayHistory();
     let totalPage = Math.ceil(totalData / limit);
     let offset = page * limit - limit;
     let prevLink = getPrevLink(page, request.query);
@@ -64,7 +64,6 @@ module.exports = {
       nextLink: nextLink && `http://127.0.0.1:3001/history?${nextLink}`,
       getMonth,
       getYear,
-      getToday,
     };
     try {
       if (typeof request.query.sort === "undefined") {
@@ -132,11 +131,16 @@ module.exports = {
     let history_subtotal = 0;
     let invoice = Math.floor(Math.random() * 1000000);
     try {
+      let d = new Date()
+      let date = d.toString() 
+      let dates = date.slice(0, 24)
+
       const setData = {
         invoice,
         history_subtotal,
-        history_created_at: new Date(),
+        history_created_at: dates,
       };
+      
       const result = await postHistory(setData);
 
       return helper.response(response, 201, "History Created", result);
@@ -148,11 +152,16 @@ module.exports = {
     try {
       let history_subtotal = 0;
       let invoice = Math.floor(Math.random() * 1000000);
+      let d = new Date()
+      let date = d.toString() 
+      let dates = date.slice(0, 24)
+
       const setData = {
         invoice,
         history_subtotal,
-        history_created_at: new Date(),
+        history_created_at: dates,
       };
+      console.log(setData)
       const result = await postHistory(setData);
       let idHistory = result.history_id;
       let totalPrice = 0;
@@ -187,10 +196,13 @@ module.exports = {
       });
       setTimeout(async () => {
         totalResult.subtotal = totalPrice + totalPrice * 0.1;
+        let d = new Date()
+        let date = d.toString() 
+        let dates = date.slice(0, 24)
         await patchHistory(
           {
             history_subtotal: totalPrice,
-            history_created_at: new Date(),
+            history_created_at: dates,
           },
           idHistory
         );
@@ -238,13 +250,26 @@ module.exports = {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
-  recentOrderHistory: async (request, response) => {
-    const result = await recentOrderHistory();
+  getTodayIncome: async (request, response) => {
+    const result = await getTodayHistory();
     try {
       return helper.response(
         response,
         200,
-        "Successfull Get Recent Orders",
+        "Successfull Get Today Income",
+        result
+      );
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  getYearIncome: async (request, response) => {
+    const result = await getYearIncomeHistory();
+    try {
+      return helper.response(
+        response,
+        200,
+        "Successfull Get Year Income",
         result
       );
     } catch (error) {

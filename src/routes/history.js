@@ -7,7 +7,8 @@ const {
   patchHistory,
   getHistoryOrder,
   getMonthHistory,
-  recentOrderHistory,
+  getTodayIncome,
+  getYearIncome
 } = require("../controller/history");
 const {
   authorization,
@@ -19,11 +20,11 @@ const {
   getHistoryRedis,
 } = require("../middleware/redis");
 
-router.get("/", authorization, getHistoryRedis, getAllHistory);
+router.get("/", authorization,getAllHistory); 
 router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById);
 router.get("/order/total", authorization, getHistoryOrder);
-router.get("/order/recent", authorization, recentOrderHistory);
-// router.get("/income/month", getMonthHistory);
+router.get("/income/today", authorization, getTodayIncome);
+router.get("/income/year", getYearIncome);
 
 router.post("/", authorization, postHistory);
 router.post("/CheckOut", authorization, CheckOut);

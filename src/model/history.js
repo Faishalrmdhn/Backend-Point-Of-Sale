@@ -103,6 +103,16 @@ module.exports = {
       );
     });
   },
+  getYearIncomeHistory: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT YEAR(history_created_at) as year, sum(history_subtotal) as subtotal FROM history WHERE YEAR(history_created_at) = YEAR(NOW())",
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
   getTodayHistory: () => {
     return new Promise((resolve, reject) => {
       connection.query(
