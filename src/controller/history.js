@@ -196,13 +196,11 @@ module.exports = {
       });
       setTimeout(async () => {
         totalResult.subtotal = totalPrice + totalPrice * 0.1;
-        let d = new Date()
-        let date = d.toString() 
-        let dates = date.slice(0, 24)
+        
         await patchHistory(
           {
             history_subtotal: totalPrice,
-            history_created_at: dates,
+            history_created_at: new Date(),
           },
           idHistory
         );
