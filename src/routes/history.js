@@ -8,7 +8,8 @@ const {
   getHistoryOrder,
   getMonthHistory,
   getTodayIncome,
-  getYearIncome
+  getYearIncome,
+  getRecentOrders
 } = require("../controller/history");
 const {
   authorization,
@@ -25,6 +26,7 @@ router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById);
 router.get("/order/total", authorization, getHistoryOrder);
 router.get("/income/today", authorization, getTodayIncome);
 router.get("/income/year", getYearIncome);
+router.get('/order/recent', getRecentOrders)
 
 router.post("/", authorization, postHistory);
 router.post("/CheckOut", authorization, CheckOut);

@@ -96,7 +96,7 @@ module.exports = {
   getYearHistory: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT MONTH(history_created_at) as month, sum(history_subtotal) as subtotal FROM history WHERE YEAR(history_created_at) = YEAR(NOW()) GROUP BY MONTH(history_created_at)",
+        "SELECT MONTH(history_created_at) as month, sum(history_subtotal) as subtotal FROM history WHERE YEAR(history_created_at) = YEAR(NOW()) GROUP BY MONTH(history_created_at) GROUP BY year",
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
         }
@@ -139,6 +139,17 @@ module.exports = {
         "SELECT * FROM history WHERE YEARWEEK(history_created_at) = YEARWEEK(NOW())",
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
+  getDataOrder: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM orders JOIN product ON orders.product_id = product.product_id WHERE history_id = ?`,
+        id,
+        (err, data) => {
+          !err ? resolve(data) : reject(new Error(err));
         }
       );
     });
